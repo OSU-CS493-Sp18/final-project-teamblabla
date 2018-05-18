@@ -1,0 +1,30 @@
+{
+  "name": "blabla-Final",
+  "version": "1.0.0",
+  "description": "An ride service API used tio connect people driving with those that need a ride to an area that they are passing/driving through/to.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "NODE_ENV=development nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OSU-CS493-Sp18/final-project-teamblabla.git"
+  },
+  "author": "David Jansen <jansedav@oregonstate.edu>",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/OSU-CS493-Sp18/master-assignment-2/issues"
+  },
+  "homepage": "https://github.com/OSU-CS493-Sp18/master-assignment-2#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "morgan": "^1.9.0",
+    "mysql": "^2.15.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.3"
+  }
+}
