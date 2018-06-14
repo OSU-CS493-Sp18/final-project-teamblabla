@@ -62,7 +62,7 @@ router.put('/:reviewID', function (req, res, next) {
   const reviewID = parseInt(req.params.reviewID);
   requireAuthentication(req,res,function() {
     if(validation.validateAgainstSchema(req.body, reviewSchema) && req.body.description) {
-      mysqlPool.query("UPDATE reviews SET ? WHERE reviewid = ?", [ req.body, reviewID ], function (err, result) {
+      mysqlPool.query("UPDATE reviews SET ? WHERE reviewid = ?", [ validation.extractValidFields(req.body, reviewSchema), reviewID ], function (err, result) {
         if (err) {
           res.status(500).json({
             "error": err
@@ -87,7 +87,7 @@ router.delete('/:reviewID', function (req, res, next) {
   const mysqlPool = req.app.locals.mysqlPool;
   const reviewID = parseInt(req.params.reviewID);
   requireAuthentication(req,res,function() {
-    mysqlPool.query("DELETE reviews WHERE reviewid = ?", [ req.body, reviewID ], function (err, result) {
+    mysqlPool.query("DELETE FROM reviews WHERE reviewid = ?", [ req.body, reviewID ], function (err, result) {
         if (err) {
           res.status(500).json({
             "error": err

@@ -1,197 +1,516 @@
 {
 	"info": {
-		"_postman_id": "538aa22c-6332-4c66-9ca3-9aabd405a9bc",
-		"name": "CS493 Final Project",
+		"_postman_id": "a14cbe57-4a94-414f-abab-3ec1486f21c3",
+		"name": "API blabla",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Login",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"username\": \"bob\",\n    \"password\": \"password\"\n}"
-				},
-				"url": {
-					"raw": "http://localhost:8080/users/login",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"users",
-						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Add a User",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"username\": \"mike\",\n    \"password\": \"password\",\n    \"email\": \"mike@email.com\",\n    \"phone\": null\n}"
-				},
-				"url": {
-					"raw": "http://localhost:8080/users",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"users"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get User Details",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YjIwOWEzYTg3YTY5ODZmYzY4MThkOGUiLCJpYXQiOjE1Mjg4NjM1ODAsImV4cCI6MTUyODk0OTk4MH0.vFy4uDugCb-dYXU0KKhy5Wwg-RqzG-Zj8TNggMrMUjw",
-							"type": "string"
+			"name": "reviews",
+			"description": null,
+			"item": [
+				{
+					"name": "Get all reviews",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "user",
+								"value": "1",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{dom}}/reviews/?",
+							"host": [
+								"{{dom}}"
+							],
+							"path": [
+								"reviews",
+								""
+							],
+							"query": [
+								{
+									"key": "user",
+									"value": "1",
+									"disabled": true
+								}
+							]
 						}
-					]
+					},
+					"response": []
 				},
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "http://localhost:8080/users/5b204bbc9226440011904fa3",
-					"protocol": "http",
-					"host": [
-						"localhost"
+				{
+					"name": "Get a review",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f458e669-9aa5-45e3-8158-9c9d57436548",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
 					],
-					"port": "8080",
-					"path": [
-						"users",
-						"5b204bbc9226440011904fa3"
-					]
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{dom}}/reviews/1",
+							"host": [
+								"{{dom}}"
+							],
+							"path": [
+								"reviews",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add a review",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"UserID\" : 2,\n\t\"DriverID\" : 1,\n\t\"RideID\": 1,\n    \"stars\" : 1,\n    \"description\": \"mean ride, bad driver\"\n}"
+						},
+						"url": {
+							"raw": "{{dom}}/reviews/",
+							"host": [
+								"{{dom}}"
+							],
+							"path": [
+								"reviews",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify a review",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"userid\" : 2,\n\t\"driverid\" : 1,\n\t\"rideid\": 1,\n    \"stars\" : 1,\n    \"description\": \"damn ride, bad driver\"\n}"
+						},
+						"url": {
+							"raw": "{{dom}}/reviews/2",
+							"host": [
+								"{{dom}}"
+							],
+							"path": [
+								"reviews",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a review",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{dom}}/reviews/2",
+							"host": [
+								"{{dom}}"
+							],
+							"path": [
+								"reviews",
+								"2"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Get All Users",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YjIwOWEzYTg3YTY5ODZmYzY4MThkOGUiLCJpYXQiOjE1Mjg4NjM1ODAsImV4cCI6MTUyODk0OTk4MH0.vFy4uDugCb-dYXU0KKhy5Wwg-RqzG-Zj8TNggMrMUjw",
-							"type": "string"
+			"name": "rides",
+			"description": null,
+			"item": [
+				{
+					"name": "Modify a ride",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YjIxYTkxMmRkZTFiMzllMGY1NTZlMjciLCJpYXQiOjE1Mjg5MzU1NzAsImV4cCI6MTUyOTAyMTk3MH0.oC48zrK-0kHS48YlNu_-vKonykRD7tpeRnEBcn8tVlE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"driverid\": 2,\n  \"price\": 18,\n  \"cardescription\": \"big car\",\n  \"departureid\": 3,\n  \"passengers\": [],\n  \"cities\": [2,1]\n}"
+						},
+						"url": {
+							"raw": "{{dom}}/rides/5",
+							"host": [
+								"{{dom}}"
+							],
+							"path": [
+								"rides",
+								"5"
+							]
 						}
-					]
+					},
+					"response": []
 				},
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "http://localhost:8080/users",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"users"
-					]
+				{
+					"name": "Get all rides",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{dom}}/rides/?departCity=3&arrivalCity=1",
+							"host": [
+								"{{dom}}"
+							],
+							"path": [
+								"rides",
+								""
+							],
+							"query": [
+								{
+									"key": "departCity",
+									"value": "3"
+								},
+								{
+									"key": "arrivalCity",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add a ride",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"driverid\": 2,\n  \"price\": 20,\n  \"cardescription\": \"big car\",\n  \"departureid\": 3,\n  \"passengers\": [],\n  \"cities\": [2,1]\n}"
+						},
+						"url": {
+							"raw": "{{dom}}/rides/",
+							"host": [
+								"{{dom}}"
+							],
+							"path": [
+								"rides",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove a ride",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YjIxYTkxMmRkZTFiMzllMGY1NTZlMjciLCJpYXQiOjE1Mjg5MzY0MzksImV4cCI6MTUyOTAyMjgzOX0.wdCMOnibOeWfRUn0nU1tJO6bZ3zS6FGDyrOyYUKdX-I",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{dom}}/rides/1",
+							"host": [
+								"{{dom}}"
+							],
+							"path": [
+								"rides",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a ride",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{dom}}/rides/",
+							"host": [
+								"{{dom}}"
+							],
+							"path": [
+								"rides",
+								""
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Modify a User",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YjIwOWEzYTg3YTY5ODZmYzY4MThkOGUiLCJpYXQiOjE1Mjg4NjM1ODAsImV4cCI6MTUyODk0OTk4MH0.vFy4uDugCb-dYXU0KKhy5Wwg-RqzG-Zj8TNggMrMUjw",
-							"type": "string"
+			"name": "users",
+			"description": "",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"bob\",\n    \"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"login"
+							]
 						}
-					]
+					},
+					"response": []
 				},
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"email\": \"sam@email.com\"\n}"
-				},
-				"url": {
-					"raw": "http://localhost:8080/users/5b209bf212044e0010677ed1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"users",
-						"5b209bf212044e0010677ed1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete a User",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YjIwOWEzYTg3YTY5ODZmYzY4MThkOGUiLCJpYXQiOjE1Mjg4NjQzMTcsImV4cCI6MTUyODk1MDcxN30.xo5kRrzygGt7mUdNlpQYWgCVLZ2NpGGfVnLmBuIWrJA",
-							"type": "string"
+				{
+					"name": "Add a User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"mike\",\n    \"password\": \"password\",\n    \"email\": \"mike@email.com\",\n    \"phone\": null\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
 						}
-					]
+					},
+					"response": []
 				},
-				"method": "DELETE",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "http://localhost:8080/users/5b209bf212044e0010677ed1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"users",
-						"5b209bf212044e0010677ed1"
-					]
+				{
+					"name": "Get User Details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YjIwOWEzYTg3YTY5ODZmYzY4MThkOGUiLCJpYXQiOjE1Mjg4NjM1ODAsImV4cCI6MTUyODk0OTk4MH0.vFy4uDugCb-dYXU0KKhy5Wwg-RqzG-Zj8TNggMrMUjw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/5b204bbc9226440011904fa3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"5b204bbc9226440011904fa3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YjIwOWEzYTg3YTY5ODZmYzY4MThkOGUiLCJpYXQiOjE1Mjg4NjM1ODAsImV4cCI6MTUyODk0OTk4MH0.vFy4uDugCb-dYXU0KKhy5Wwg-RqzG-Zj8TNggMrMUjw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify a User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YjIwOWEzYTg3YTY5ODZmYzY4MThkOGUiLCJpYXQiOjE1Mjg4NjM1ODAsImV4cCI6MTUyODk0OTk4MH0.vFy4uDugCb-dYXU0KKhy5Wwg-RqzG-Zj8TNggMrMUjw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"sam@email.com\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/5b209bf212044e0010677ed1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"5b209bf212044e0010677ed1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YjIwOWEzYTg3YTY5ODZmYzY4MThkOGUiLCJpYXQiOjE1Mjg4NjQzMTcsImV4cCI6MTUyODk1MDcxN30.xo5kRrzygGt7mUdNlpQYWgCVLZ2NpGGfVnLmBuIWrJA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/5b209bf212044e0010677ed1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"5b209bf212044e0010677ed1"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		}
 	]
 }

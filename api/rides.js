@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const validation = require('../lib/validation');
-const auth = require('../lib/auth')
+
+const { generateAuthToken, requireAuthentication } = require('../lib/auth');
 
 exports.router = router;
 
@@ -75,7 +76,6 @@ function getRideByID(rideID, mysqlPool) {
       var returnpassengers = [];
       console.log("passengers = ", passengers)
       for (p in passengers) {
-        console.log("p = ", p)
         returnpassengers.push(passengers[p]["UserID"])
       }
       returnride.passengers = returnpassengers
@@ -88,7 +88,6 @@ function getRideByID(rideID, mysqlPool) {
       var returncities = [];
       console.log("cities = ", cities)
       for (c in cities) {
-        console.log("c = ", c)
         returncities.push(cities[c]["CityID"])
       }
       returnride.cities = returncities;
@@ -147,8 +146,11 @@ router.get("/:rideid", function(req,res) {
   const mysqlPool = req.app.locals.mysqlPool;
   getRideByID(req.params.rideid, mysqlPool)
   .then( rideResult => {
-    res.status(200).json(rideResult)
-  })
+    if (rideResult)
+      res.status(200).json(rideResult)
+    else 
+      res.status(404).json({err: "No ride found"})
+    })
   .catch( err => {
     res.status(500).json({
       "error": err
@@ -216,49 +218,74 @@ router.put('/:rideID', function (req, res, next) {
   const rideID = parseInt(req.params.rideID);
   requireAuthentication(req,res,function() {
     if(validation.validateAgainstSchema(req.body, rideSchema)) {
-      mysqlPool.query('UPDATE rides ? WHERE RideID=?',[[req.body.driverid, req.body.price, req.body.cardescription, req.body.departureid], rideID], function (err, result) {
+      let updateFields = {
+        "DriverID": req.body.driverid,
+        "price": req.body.price,
+        "CarDescription": req.body.cardescription,
+        "DepartureID": req.body.departureid
+      }
+      mysqlPool.query('UPDATE rides SET ? WHERE RideID = ?',[updateFields, rideID], function (err, result) {
         if (err) {
           res.status(400).json({
             "error": err
           })
         } else {
-          var values = []
-          for (let c in req.body.cities) {
-            console.log(c)
-            values.push([req.body.cities[c],rideID])
-          }
-            mysqlPool.query('UPDATE CitiesPassedThrough ? WHERE RideID=?', [values, rideID], function (err, result) {
-              if (err) {
-                res.status(400).json({
-                  "error": err
-                })
-              } else {
-                values = []
-                console.log(req.body.passengers)
-                for (let p in req.body.passengers) {
-                  console.log(p)
-                  values.push([req.body.passengers[p],rideID])
-                }
-                console.log(values)
-                if (values.length != 0) {
-                  mysqlPool.query('UPDATE CurrentPassengers ? WHERE ? ', [values,rideID], function (err, result) {
-                    if (err) {
-                      res.status(400).json({
-                        "error": err
-                      });
-                    } else {
-                      res.status(201).json({
-                        "link": "/rides/" + rideID
-                      })
-                    }
+          mysqlPool.query("DELETE FROM CitiesPassedThrough WHERE RideID = ?", [rideID], function (err, result) {
+            if (err) {
+              res.status(500).json({
+                "error": err
+              })
+            } else {
+              var values = []
+              for (let c in req.body.cities) {
+                console.log(c)
+                values.push([req.body.cities[c],rideID])
+              }
+              mysqlPool.query('INSERT INTO CitiesPassedThrough (CityID, RideID) VALUES ?', [values], function (err, result) {
+                if (err) {
+                  res.status(400).json({
+                    "error": err
                   })
                 } else {
-                  res.status(201).json({
-                    "link": "/rides/" + rideID
-                  })
+                  mysqlPool.query("DELETE FROM CurrentPassengers WHERE RideID = ?", [rideID], function (err, result) {
+                    if (err) {
+                      res.status(500).json({
+                        "error": err
+                      })
+                    } else {
+                      values = []
+                      console.log(req.body.passengers)
+                      for (let p in req.body.passengers) {
+                        console.log(p)
+                        values.push([req.body.passengers[p],rideID])
+                      }
+                      console.log(values)
+                      if (values.length != 0) {
+                        mysqlPool.query('INSERT INTO CurrentPassengers (UserID, RideID) VALUES ? ', [values], function (err, result) {
+                          if (err) {
+                            res.status(400).json({
+                              "error": err
+                            });
+                          } else {
+                            res.status(201).json({
+                              "link": "/rides/" + rideID
+                            })
+                          }
+                        })
+                      } else {
+                        res.status(201).json({
+                          "link": "/rides/" + rideID
+                        })
+                      }
+                        }
+                      });
+                      
                 }
-              }
-            }) 
+              })
+            }
+        });
+
+            
         }
       });
     } else
@@ -268,11 +295,11 @@ router.put('/:rideID', function (req, res, next) {
   });
 });
 
-router.delete('/:userID', function (req, res, next) {
+router.delete('/:rideID', function (req, res, next) {
   const mysqlPool = req.app.locals.mysqlPool;
-  const rideID = parseInt(req.params.reviewID);
+  const rideID = parseInt(req.params.rideID);
   requireAuthentication(req,res,function() {
-    mysqlPool.query("DELETE rides WHERE RideID = ?", [rideID], function (err, result) {
+    mysqlPool.query("DELETE FROM rides WHERE RideID = ?", [rideID], function (err, result) {
         if (err) {
           res.status(500).json({
             "error": err
@@ -280,6 +307,6 @@ router.delete('/:userID', function (req, res, next) {
         } else {
           res.status(200).send()
         }
-      });
+    });
   });
 });

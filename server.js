@@ -28,7 +28,8 @@ app.locals.mysqlPool = mysql.createPool({
   port: mysqlPort,
   database: mysqlDBName,
   user: mysqlUser,
-  password: mysqlPassword
+  password: mysqlPassword,
+  multipleStatements: true
 });
 
 app.use(bodyParser.json());
